@@ -5,6 +5,8 @@ import shutil
 from Music_metadata import MusicMetadata
 from Logger import Logger
 
+__version__ = 0.1
+
 class CategorizeMusic:
 
     def __init__(self, music_list):

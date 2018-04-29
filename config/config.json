@@ -2,5 +2,6 @@
   "music":{
     "location" : "/home/milad/test/medify_test/"
   },
-  "log_location": "/home/milad/test/medify_test/"
+  "log_location": "/home/milad/test/medify_test/",
+  "version": 0.1
 }
