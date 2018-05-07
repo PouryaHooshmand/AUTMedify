@@ -3,5 +3,11 @@
     "location" : "/home/milad/test/medify_test/"
   },
   "log_location": "/home/milad/test/medify_test/",
-  "version": 0.1
+  "version": 0.1,
+  "ACRCloud": {
+    "Region": "eu-west-1",
+    "Host": "identify-eu-west-1.acrcloud.com",
+    "Access_Key": "7b76f9ddc02872121327d6b74f82042c",
+    "Access Secret": "C3sifASMGhuzBal3hmFMTdufDg1T6jF5B4wGH7ye"
+  }
 }
