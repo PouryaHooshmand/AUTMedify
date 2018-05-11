@@ -22,23 +22,41 @@ class CategorizeMusic:
             config_data = json.load(config_file)
             self.music_location = config_data['music']['location']
 
+    def artist(self,metadata):
+        file_dst = self.music_location + metadata['artist'] + '/' + metadata['album']
+        return file_dst
+
+    def album(self,metadata):
+        file_dst=self.music_location + metadata['album']
+        return file_dst
+
+    def genre(self,metadata):
+        file_dst=self.music_location + metadata['genre']
+        return file_dst
+
+    def check(self,file_dst,music_file):
+
+        # Create directories and move file
+        if not os.path.exists(file_dst):
+            os.makedirs(file_dst)
+            self.logger('info', 'directory not found!\nCreating directory: ' + file_dst)
+
+        try:
+            shutil.move(src=music_file['address'], dst=file_dst)
+        except shutil.Error as shutil_error:
+            self.logger('error', "File can't be moved\n" + str(shutil_error))
+        except IOError as io_error:
+            self.logger('error', str(io_error))
+        except:
+            self.logger('error', 'Unknown Error')
+
     def move_files(self):
 
         for music_file in self.music_list:
-
             metadata = MusicMetadata(music_file['address']).metadata  # Get Metadata
-            file_dst = self.music_location + metadata['artist'] + '/' + metadata['album']
-
-            # Create directories and move file
-            if not os.path.exists(file_dst):
-                os.makedirs(file_dst)
-                self.logger('info', 'directory not found!\nCreating directory: ' + file_dst)
-
-            try:
-                shutil.move(src=music_file['address'], dst=file_dst)
-            except shutil.Error as shutil_error:
-                self.logger('error', "File can't be moved\n" + str(shutil_error))
-            except IOError as io_error:
-                self.logger('error', str(io_error))
-            except:
-                self.logger('error', 'Unknown Error')
+            file_dst=self.artist(self,metadata)
+            self.check(self,file_dst,music_file)
+            file_dst=self.album(self,metadata)
+            self.check(self,file_dst,music_file)
+            self.genre(self,metadata)
+            self.check(self,file_dst,music_file)
