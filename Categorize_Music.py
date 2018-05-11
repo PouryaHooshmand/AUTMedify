@@ -2,10 +2,11 @@ import json
 import os
 import shutil
 
-from Music_metadata import MusicMetadata
 from Logger import Logger
+from Music_metadata import MusicMetadata
 
 __version__ = 0.1
+
 
 class CategorizeMusic:
 
@@ -22,19 +23,19 @@ class CategorizeMusic:
             config_data = json.load(config_file)
             self.music_location = config_data['music']['location']
 
-    def artist(self,metadata):
-        file_dst = self.music_location + metadata['artist'] + '/' + metadata['album']
+    def artist(self, track_metadata):
+        file_dst = self.music_location + track_metadata['artist'] + '/' + track_metadata['album']
         return file_dst
 
-    def album(self,metadata):
-        file_dst=self.music_location + metadata['album']
+    def album(self, track_metadata):
+        file_dst = self.music_location + track_metadata['album']
         return file_dst
 
-    def genre(self,metadata):
-        file_dst=self.music_location + metadata['genre']
+    def genre(self, track_metadata):
+        file_dst = self.music_location + track_metadata['genre']
         return file_dst
 
-    def check(self,file_dst,music_file):
+    def move_track(self, file_dst, music_file):
 
         # Create directories and move file
         if not os.path.exists(file_dst):
@@ -50,13 +51,11 @@ class CategorizeMusic:
         except:
             self.logger('error', 'Unknown Error')
 
-    def move_files(self):
+    def move_file(self):
 
         for music_file in self.music_list:
             metadata = MusicMetadata(music_file['address']).metadata  # Get Metadata
-            file_dst=self.artist(self,metadata)
-            self.check(self,file_dst,music_file)
-            file_dst=self.album(self,metadata)
-            self.check(self,file_dst,music_file)
-            self.genre(self,metadata)
-            self.check(self,file_dst,music_file)
+
+            self.move_track(self.artist(metadata), music_file)
+            self.move_track(self.album(metadata), music_file)
+            self.move_track(self.genre(metadata), music_file)
