@@ -30,8 +30,8 @@ class Logger:
 
         with open(error_log_path, mode=append_write) as error_log:
             error_log.write(
-                str('\n' + time.strftime("%Y-%m-%d  %H:%M:%S\n"))
-                + "info:\n" + str(self.info)
+                str('\n' + time.strftime("%Y-%m-%d  %H:%M:%S"))
+                + "\ninfo:\n" + str(self.info)
                 + "\nerror:\n" + str(error) + "\n")
 
     def save_info(self, info):  # Save information in info.log
@@ -47,7 +47,7 @@ class Logger:
             append_write = 'w'
 
         with open(info_log_path, mode=append_write) as info_log:
-            info_log.write('\n' + time.strftime("%Y-%m-%d  %H:%M:%S\n")
+            info_log.write('\n' + time.strftime("%Y-%m-%d  %H:%M:%S")
                            + '\n' + info + "\n")
 
     def log(self, log_type, message):  # main function to call in other classes
