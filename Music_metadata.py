@@ -1,4 +1,5 @@
 import eyed3
+import eyed3.plugins.genres
 
 __version__ = 0.1
 
@@ -11,7 +12,6 @@ class MusicMetadata:
 
         self.audiofile = eyed3.load(music_address)
 
-    @property
     def metadata(self):
         return {'album': self.audiofile.tag.album,
                 'album_artist': self.audiofile.tag.album_artist,
@@ -23,20 +23,16 @@ class MusicMetadata:
                 'audio_source_url': self.audiofile.tag.audio_source_url,
                 'bpm': self.audiofile.tag.bpm,
                 'cd_id': self.audiofile.tag.cd_id,
-                'chapters': self.audiofile.tag.chapters,
-                'comments': self.audiofile.tag.comments,
                 'copyright_url': self.audiofile.tag.copyright_url,
                 'disc_num': self.audiofile.tag.disc_num,
-                'genre': self.audiofile.tag.genre,
-                'images': self.audiofile.tag.images,
+                'genre': str(self.audiofile.tag.genre),
                 'publisher': self.audiofile.tag.publisher,
                 'release_date': self.audiofile.tag.release_date,
                 'title': self.audiofile.tag.title,
                 'track_num': self.audiofile.tag.track_num
                 }
 
-    @metadata.setter
-    def metadata(self, data):
+    def metadata_setter(self, data):
 
         try:
             self.audiofile.tag.album = data['album']
@@ -85,16 +81,6 @@ class MusicMetadata:
 
         try:
             self.audiofile.tag.cd_id = data['cd_id']
-        except:
-            pass
-
-        try:
-            self.audiofile.tag.chapters = data['chapters']
-        except:
-            pass
-
-        try:
-            self.audiofile.tag.comments = data['comments']
         except:
             pass
 
