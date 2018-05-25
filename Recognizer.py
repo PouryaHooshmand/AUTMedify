@@ -1,6 +1,5 @@
+import json
 import os
-import json
-import json
 
 from acrcloud.recognizer import ACRCloudRecognizer
 
@@ -19,6 +18,7 @@ def Search_directory(search_dir):
                 music_list.append({'address': root, 'name': file})
 
     return music_list
+
 
 class Recognizer:
 
@@ -81,5 +81,5 @@ class Recognizer:
                     "status": metainfo["status"]["msg"]
                     }
 
-    def get_acrcloud_metainfo(self,track_location):
+    def get_acrcloud_metainfo(self, track_location):
         return json.loads(self.acrcloud.recognize_by_file(track_location, 20))
