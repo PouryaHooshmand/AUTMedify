@@ -13,7 +13,7 @@ class DictDiffer(object):
         self.intersect = self.set_current_keys.intersection(self.set_past_keys)
 
     def added(self):
-        added_keys = list(self.set_current - self.intersect)
+        added_keys = list(self.set_current_keys - self.intersect)
         result = {}
         for key in added_keys:
             result[key] = self.current_dict[key]
@@ -31,15 +31,21 @@ class DictDiffer(object):
     def changed(self):
         result = {}
         for key in list(self.intersect):
-            if self.current_dict[key] != self.past_dict[key]:
-                result[key] = self.current_dict[key]
+            try:
+                if self.current_dict[key] != self.past_dict[key]:
+                    result[key] = self.current_dict[key]
+            except:
+                pass
 
         return result
 
     def unchanged(self):
         result = {}
         for key in list(self.intersect):
-            if self.current_dict[key] == self.past_dict[key]:
-                result[key] = self.current_dict[key]
+            try:
+                if self.current_dict[key] != self.past_dict[key]:
+                    result[key] = self.current_dict[key]
+            except:
+                pass
 
         return result
