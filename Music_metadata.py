@@ -4,6 +4,7 @@ import stagger
 
 __version__ = 0.1
 
+
 class MusicMetadata:
 
     def __init__(self, music_address):
@@ -51,7 +52,7 @@ class MusicMetadata:
         except:
             pass
 
-        try: # TODO: COVER
+        try:
             self.musicfile.picture = data['image']
         except:
             pass
