@@ -5,6 +5,7 @@ from acrcloud.recognizer import ACRCloudRecognizer
 from Dictionary_Difference import DictDiffer
 from Logger import Logger
 from Music_metadata import MusicMetadata
+from find_cover import get_cover
 
 
 class Recognizer:
@@ -42,25 +43,31 @@ class Recognizer:
         return True
 
     def edit_metadata(self, track_location, new_metadata):
-        # TODO: CHECK THE FUCKKING TEST.PY
-        # FUUUUUUUUUUCK THIS SHIT.
-        # CHECK THE FUCKING STRING
-        # CHECK THE FUCKING Genre OBJEECT
-        # FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK
 
         track_data = MusicMetadata(track_location)
-        track_metadata = track_data.metadata()
-        del track_metadata['Genre']
+
+        get_cover(track_location)
+
         metadata_diff = DictDiffer(new_metadata, track_data.metadata())
-        track_data.metadata_setter(metadata_diff.changed())  # Edit Changed Values
-        track_data.metadata_setter(metadata_diff.added())  # Add New Values
+
+        self.log('info', 'OLD Metadata: ' + str(track_data.metadata()))
+        self.log('info', 'NEW Metadata: ' + str(new_metadata))
+
+        if metadata_diff.changed():
+            self.log('info', 'Fixing Wrong Metadata fields\n')
+            track_data.metadata_setter(metadata_diff.changed())  # Edit Changed Values
+
+        if metadata_diff.added():
+            self.log('info', 'New fields adding to metadata\n')
+            track_data.metadata_setter(metadata_diff.added())  # Add New Values
 
     def get_metainfo(self, track_location):
 
         metainfo = self.get_acrcloud_metainfo(track_location)
 
         if metainfo["status"]["code"] == 3000:
-            self.log('error', 'Unknown Error happend for track : ' + track_location + '\nACR-Cloud results:\n' + str(metainfo))
+            self.log('error',
+                     'Unknown Error happend for track : ' + track_location + '\nACR-Cloud results:\n' + str(metainfo))
             return metainfo
 
         else:
