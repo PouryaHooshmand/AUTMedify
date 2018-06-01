@@ -5,7 +5,8 @@ from Music_metadata import MusicMetadata
 
 
 def get_cover(track_address):
-    track_metadata = MusicMetadata(track_address).metadata()
+    track_data = MusicMetadata(track_address)
+    track_metadata = track_data.metadata()
     album = track_metadata['album']
     artist = track_metadata['artist']
 
@@ -24,4 +25,8 @@ def get_cover(track_address):
 
     log('info', 'Download ' + str(album) + " " + str(artist) + " cover COMPLETED")
 
-    return result[args["keywords"]][0]
+    cover = result[args["keywords"]][0]
+
+    track_data.metadata_setter({'cover': cover})
+
+    return True
