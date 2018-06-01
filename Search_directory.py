@@ -10,8 +10,8 @@ def search_directory(search_dir):
     for root, dirs, files in os.walk(search_dir):
         for file in files:
             # list of file types
-            if file.endswith(".mp3") or file.endswith(".m4a"):
-                music_list.append({'address': root + '/' + file, 'name': file})
+            if file.endswith(".mp3"):
+                music_list.append({'address': root + '\\' + file, 'name': file})
 
     if music_list:
         log('info', 'searching complete\nmusic files: ' + str(music_list))
