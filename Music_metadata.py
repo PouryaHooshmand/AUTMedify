@@ -1,7 +1,5 @@
 import eyed3
 
-import stagger
-
 __version__ = 0.1
 
 
@@ -12,63 +10,51 @@ class MusicMetadata:
         :param music_address: Music File address
         """
         self.music_address = music_address
-        self.musicfile = stagger.read_tag(music_address)
+        self.audiofile = eyed3.load(self.music_address)
 
     def metadata(self):
-        return {'album': self.musicfile.album,
-                'album_artist': self.musicfile.album_artist,
-                'artist': self.musicfile.artist,
-                'disc_num': self.musicfile.disc,
-                'genre': self.musicfile.genre,
-                'release_date': self.musicfile.date,
-                'title': self.musicfile.title,
-                'track_num': self.musicfile.track
+        return {'album': self.audiofile.tag.album,
+                'album_artist': self.audiofile.tag.album_artist,
+                'artist': self.audiofile.tag.artist,
+                'genre': str(self.audiofile.tag.genre),
+                'title': self.audiofile.tag.title,
+                'track_num': self.audiofile.tag.track_num
                 }
 
     def metadata_setter(self, data):
 
         try:
-            self.musicfile.album = data['album'].decode('utf-8')
+            self.audiofile.album = data['album'].decode('utf-8')
         except:
             pass
 
         try:
-            self.musicfile.album_artist = data['album_artist'].decode('utf-8')
+            self.audiofile.album_artist = data['album_artist'].decode('utf-8')
         except:
             pass
 
         try:
-            self.musicfile.artist = data['artist'].decode('utf-8')
+            self.audiofile.artist = data['artist'].decode('utf-8')
         except:
             pass
 
         try:
-            self.musicfile.disc = data['disc_num'].decode('utf-8')
+            self.audiofile.genre = data['genre'].decode('utf-8')
         except:
             pass
 
         try:
-            self.musicfile.genre = data['genre'].decode('utf-8')
+            self.audiofile.picture = data['image']
         except:
             pass
 
         try:
-            self.musicfile.picture = data['image']
+            self.audiofile.title = data['title'].decode('utf-8')
         except:
             pass
 
         try:
-            self.musicfile.date = data['release_date'].decode('utf-8')
-        except:
-            pass
-
-        try:
-            self.musicfile.title = data['title'].decode('utf-8')
-        except:
-            pass
-
-        try:
-            self.musicfile.track = data['track_num'].decode('utf-8')
+            self.audiofile.track = data['track_num'].decode('utf-8')
         except:
             pass
 
@@ -80,6 +66,6 @@ class MusicMetadata:
         except:
             pass
 
-        self.musicfile.write()
+        self.audiofile.tag.save()
 
         return True
