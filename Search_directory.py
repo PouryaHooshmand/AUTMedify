@@ -1,25 +1,22 @@
-from google_images_download import google_images_download
+import os
+
 from Logger import Logger
-from Music_metadata import MusicMetadata
 
-
-def get_cover(address):
+def search_directory(search_dir):
     log = Logger().log
-    MD = MusicMetadata(address).metadata()
-    album = MD["album"]
-    artist = MD["artist"]
+    music_list = []
+    # search in given directory
+    log('info', 'searching directory to find music')
+    for root, dirs, files in os.walk(search_dir):
+        for file in files:
+            # list of file types
+            if file.endswith(".mp3") or file.endswith(".m4a"):
+                music_list.append({'address': root + '/' + file, 'name': file})
 
-    log('info', 'Downloading ' + album + " " + artist + " cover")
+    if music_list:
+        log('info', 'searching complete\nmusic files: ' + str(music_list))
+    else:
+        log('info', 'empty directory. nothing to search')
 
-    response = google_images_download.googleimagesdownload()
+    return music_list
 
-    args = {"keywords": album + " " + artist, "limit": 1, "print_urls": True, "specific_site": "wikipedia.org"}
-    try:
-        result = response.download(args)
-    except:
-        log('error', 'Unknown error happened while downloading ' + str(album) + " " + str(artist) + " cover")
-        return 0
-
-    log('info', 'Download ' + str(album) + " " + str(artist) + " cover COMPLETED")
-
-    return result[args["keywords"]][0]
