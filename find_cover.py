@@ -1,4 +1,5 @@
 from google_images_download import google_images_download
+import stagger
 
 from Logger import Logger
 from Music_metadata import MusicMetadata
@@ -6,6 +7,8 @@ from Music_metadata import MusicMetadata
 
 def get_cover(track_address):
     track_data = MusicMetadata(track_address)
+    track_stagger = stagger.read_tag(track_address)
+
     track_metadata = track_data.metadata()
     album = track_metadata['album']
     artist = track_metadata['artist']
@@ -27,6 +30,8 @@ def get_cover(track_address):
 
     cover = result[args["keywords"]][0]
 
-    track_data.metadata_setter({'cover': cover})
+    track_stagger.picture = cover
+
+    track_stagger.write()
 
     return True

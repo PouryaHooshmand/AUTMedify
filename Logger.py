@@ -20,7 +20,7 @@ class Logger:
 
     def save_error(self, error):  # Save errors in error.log
 
-        self.error = error  # Saving Last error in variable (no use for now)
+        self.error = str(error.encode('utf-8'))  # Saving Last error in variable (no use for now)
         error_log_path = self.log_dir + '[' + str(datetime.date.today().year) + '-' + str(
             datetime.date.today().month) + ']' + 'error.log'
         if os.path.exists(error_log_path):  # Check if error.log exists
@@ -35,6 +35,8 @@ class Logger:
                 + "\nerror:\n" + str(error) + "\n")
 
     def save_info(self, info):  # Save information in info.log
+
+        info = str(info.encode('utf-8'))
 
         self.info = info  # Saving last info in variable for using in error log
 

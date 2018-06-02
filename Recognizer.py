@@ -6,7 +6,7 @@ from Dictionary_Difference import DictDiffer
 from Logger import Logger
 from Music_metadata import MusicMetadata
 from find_cover import get_cover
-
+from Find_lyric import findLyrics
 
 class Recognizer:
 
@@ -46,7 +46,9 @@ class Recognizer:
 
         track_data = MusicMetadata(track_location)
 
-        get_cover(track_location)
+        get_cover(track_location)  # TODO: Check THE FUCKING COVER CHANGING ABILITY FUCK THIS SHIT
+
+        findLyrics(track_location)
 
         metadata_diff = DictDiffer(new_metadata, track_data.metadata())
 
