@@ -1,5 +1,5 @@
-from google_images_download import google_images_download
 import stagger
+from google_images_download import google_images_download
 
 from Logger import Logger
 from Music_metadata import MusicMetadata
@@ -19,9 +19,9 @@ def get_cover(track_address):
     response = google_images_download.googleimagesdownload()
 
     args = {"keywords": album + " " + artist, "limit": 1, "print_urls": True, "specific_site": "wikipedia.org"}
+
     try:
         result = response.download(args)
-
     except:
         log('error', 'Unknown error happened while downloading ' + str(album) + " " + str(artist) + " cover")
         return 0
@@ -29,12 +29,12 @@ def get_cover(track_address):
     log('info', 'Download ' + str(album) + " " + str(artist) + " cover COMPLETED")
 
     cover = result[args["keywords"]][0]
-
+    log('info', 'Changing Cover ' + track_metadata['title'])
     track_stagger.picture = cover
-
     track_stagger.write()
 
     return True
+
 
 if __name__ == '__main__':
 
