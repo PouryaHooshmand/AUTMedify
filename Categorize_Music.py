@@ -61,9 +61,15 @@ class CategorizeMusic:
             self.logger('info', 'directory not found!\nCreating directory: ' + file_dst)
 
         try:
-            os.symlink(source=file_dst + '/' + music_file['name'] , link_name=music_file['address'])
+            print('source: ' + file_dst + '/' + music_file['name'])
+            print('Address: ' + music_file['address'])
+            os.symlink(music_file['address'], file_dst + '/' + music_file['name'])
+        except os.error as os_error:
+            self.logger('error', "File can't be moved\n" + str(os_error))
+        except IOError as io_error:
+            self.logger('error', str(io_error))
         except:
-            pass
+            self.logger('error', 'Unknown Error')
 
     def move_file(self):
 
