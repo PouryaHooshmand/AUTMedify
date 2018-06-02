@@ -1,8 +1,10 @@
 import os
-import Music_metadata
-import billboard
-import Search_directory
 
+import billboard
+
+import Music_metadata
+import Search_directory
+import Logger
 charts = [
     'hot-100',
     'r-b-hip-hop-songs',
@@ -13,6 +15,7 @@ charts = [
     'latin-songs'
 ]
 
+logger = Logger.Logger().log
 
 def checkSonginChart(source, des, chartname, chart):
     musicMD = Music_metadata.MusicMetadata(source)
@@ -20,28 +23,27 @@ def checkSonginChart(source, des, chartname, chart):
     title = musicMD.metadata()['title']
     artist = musicMD.metadata()['artist']
 
-    if not os.path.exists(des + '/' + chartname + '/'): #Creating Chart Folder
+    if not os.path.exists(des + '/' + chartname + '/'):  # Creating Chart Folder
         os.makedirs(des + '/' + chartname + '/')
 
-    for song in chart: # Searching For Song In Chart
+    for song in chart:  # Searching For Song In Chart
         if song.title == title and song.artist == artist:
-            if os.path.isfile(des + '/' + chartname + '/' + artist + "-" + title + ".mp3"): # Check if shortcut exists
-                print("the file exists")
+            if os.path.isfile(des + '/' + chartname + '/' + artist + "-" + title + ".mp3"):  # Check if shortcut exists
+                logger('error', 'Symbolic Link for ' + title + ' already exist')
                 break
-            os.symlink(source, des + '/' + chartname + '/' + artist + "-" + title + ".mp3") #Creating Shortcut
+            os.symlink(source, des + '/' + chartname + '/' + artist + "-" + title + ".mp3")  # Creating Shortcut
+            logger('info', 'Creating Symbolic Link for ' + title + ' by ' + artist)
+
 
 # source = '/home/pouya/Desktop/Drake Nice For What'
 # des = '/home/pouya/Desktop'
 
 def createPlaylists(source, des):
-    folderSongs = Search_directory.search_directory(source)
-    for chartname in charts:
-        print("Working On " + chartname + " ---------- ")
-        chart = billboard.ChartData(chartname)
-        for song in folderSongs:
-            print("Checking : " + song['address'] )
-            checkSonginChart(song['address'], des, chartname, chart)
-
-
-if __name__ == '__main__':
-    createPlaylists('/home/milad/test/medify_test/music/', '/home/milad/test/medify_test/charts/')
+    folder_songs = Search_directory.search_directory(source)
+    logger('info', 'Song Suggestion STARTED')
+    for chart_name in charts:
+        logger('info', 'Working on ' + chart_name)
+        chart = billboard.ChartData(chart_name)
+        for song in folder_songs:
+            logger('info', "Checking : " + song['address'] + ' if exist in top charts')
+            checkSonginChart(song['address'], des, chart_name, chart)
