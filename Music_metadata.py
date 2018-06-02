@@ -24,37 +24,32 @@ class MusicMetadata:
     def metadata_setter(self, data):
 
         try:
-            self.audiofile.album = data['album'].decode('utf-8')
+            self.audiofile.tag.album = data['album'].decode('utf-8')
         except:
             pass
 
         try:
-            self.audiofile.album_artist = data['album_artist'].decode('utf-8')
+            self.audiofile.tag.album_artist = data['album_artist'].decode('utf-8')
         except:
             pass
 
         try:
-            self.audiofile.artist = data['artist'].decode('utf-8')
+            self.audiofile.tag.artist = data['artist'].decode('utf-8')
         except:
             pass
 
         try:
-            self.audiofile.genre = data['genre'].decode('utf-8')
+            self.audiofile.tag.genre = data['genre'].decode('utf-8')
         except:
             pass
 
         try:
-            self.audiofile.picture = data['image']
+            self.audiofile.tag.title = data['title'].decode('utf-8')
         except:
             pass
 
         try:
-            self.audiofile.title = data['title'].decode('utf-8')
-        except:
-            pass
-
-        try:
-            self.audiofile.track = data['track_num'].decode('utf-8')
+            self.audiofile.tag.track_num = int(data['track_num'])
         except:
             pass
 
