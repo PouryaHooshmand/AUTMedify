@@ -16,23 +16,25 @@ class CategorizeMusic:
         """
 
         self.music_list = music_list
-        self.logger = Logger.log
+        self.logger = Logger().log
 
         # Loading Necessary Information from Config File
         with open("/home/milad/College/Medify/config/config.json") as config_file:
             config_data = json.load(config_file)
             self.music_location = config_data['music']['location']
 
+        self.move_file()
+
     def artist(self, track_metadata):
-        file_dst = self.music_location + track_metadata['artist'] + '/' + track_metadata['album']
+        file_dst = self.music_location + 'Artists/' + track_metadata['artist'] + '/' + track_metadata['album']
         return file_dst
 
     def album(self, track_metadata):
-        file_dst = self.music_location + track_metadata['album']
+        file_dst = self.music_location + 'Albums/' +  track_metadata['album']
         return file_dst
 
     def genre(self, track_metadata):
-        file_dst = self.music_location + track_metadata['genre']
+        file_dst = self.music_location + 'Genres/' + track_metadata['genre']
         return file_dst
 
     def move_track(self, file_dst, music_file):
