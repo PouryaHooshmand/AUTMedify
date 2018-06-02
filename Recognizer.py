@@ -5,8 +5,6 @@ from acrcloud.recognizer import ACRCloudRecognizer
 from Dictionary_Difference import DictDiffer
 from Logger import Logger
 from Music_metadata import MusicMetadata
-from find_cover import get_cover
-from Find_lyric import findLyrics
 
 class Recognizer:
 
@@ -46,10 +44,6 @@ class Recognizer:
 
         track_data = MusicMetadata(track_location)
 
-        get_cover(track_location)  # TODO: Check THE FUCKING COVER CHANGING ABILITY FUCK THIS SHIT
-
-        findLyrics(track_location)
-
         metadata_diff = DictDiffer(new_metadata, track_data.metadata())
 
         self.log('info', 'OLD Metadata: ' + str(track_data.metadata()))
@@ -73,11 +67,12 @@ class Recognizer:
             return metainfo
 
         else:
+            self.log('info',
+                     'ACR-Cloud Answer for track : ' + track_location + '\nACR-Cloud results:\n' + str(metainfo))
             return {"album": metainfo["metadata"]["music"][0]["album"]["name"],
                     "album_artist": metainfo["metadata"]["music"][0]["artists"][0]["name"],
                     "artist": metainfo["metadata"]["music"][0]["artists"][0]["name"],
-                    "genre": metainfo["metadata"]["music"][0]["genres"][0]["name"],
-                    "publisher": metainfo["metadata"]["music"][0]["label"],
+                    # "genre": metainfo["metadata"]["music"][0]["genres"][0]["name"],
                     "release_date": metainfo["metadata"]["music"][0]["release_date"],
                     "title": metainfo["metadata"]["music"][0]["title"],
                     "status": metainfo["status"]["msg"]

@@ -1,25 +1,47 @@
-
 import os
-from win32com.client import Dispatch
-import stagger
+import Music_metadata
+import billboard
+import Search_directory
+
+charts = [
+    'hot-100',
+    'r-b-hip-hop-songs',
+    'pop-songs',
+    'country-songs',
+    'rock-songs',
+    'dance-electronic-songs',
+    'latin-songs'
+]
 
 
-def checkChart(address, des, chart):
-    musicMD = stagger.read_tag(address)
-    title = musicMD.title
-    artist = musicMD.artist
-    chartname = chart.name
+def checkSonginChart(source, des, chartname, chart):
+    musicMD = Music_metadata.MusicMetadata(source)
 
-    if not os.path.exists(des + '\\' + chartname + '\\'):
-        os.makedirs(des + '\\' + chartname + '\\')
-    for song in chart:
+    title = musicMD.metadata()['title']
+    artist = musicMD.metadata()['artist']
+
+    if not os.path.exists(des + '/' + chartname + '/'): #Creating Chart Folder
+        os.makedirs(des + '/' + chartname + '/')
+
+    for song in chart: # Searching For Song In Chart
         if song.title == title and song.artist == artist:
-            path = os.path.join(des + '\\' + chartname + '\\', title + "-" + artist + ".lnk")
-            target = r"" + address
-            icon = r"" + address
+            if os.path.isfile(des + '/' + chartname + '/' + artist + "-" + title + ".mp3"): # Check if shortcut exists
+                print("the file exists")
+                break
+            os.symlink(source, des + '/' + chartname + '/' + artist + "-" + title + ".mp3") #Creating Shortcut
 
-            shell = Dispatch('WScript.Shell')
-            shortcut = shell.CreateShortCut(path)
-            shortcut.Targetpath = target
-            shortcut.IconLocation = icon
-            shortcut.save()
+# source = '/home/pouya/Desktop/Drake Nice For What'
+# des = '/home/pouya/Desktop'
+
+def createPlaylists(source, des):
+    folderSongs = Search_directory.search_directory(source)
+    for chartname in charts:
+        print("Working On " + chartname + " ---------- ")
+        chart = billboard.ChartData(chartname)
+        for song in folderSongs:
+            print("Checking : " + song['address'] )
+            checkSonginChart(song['address'], des, chartname, chart)
+
+
+if __name__ == '__main__':
+    createPlaylists('/home/milad/test/medify_test/music/', '/home/milad/test/medify_test/charts/')

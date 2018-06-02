@@ -1,8 +1,8 @@
 {
   "music":{
-    "location" : "/home/milad/test/medify_test/"
+    "location" : "/home/milad/test/medify_test/music/"
   },
-  "log_directory": "/home/milad/test/medify_test/",
+  "log_directory": "/home/milad/test/medify_test/log/",
   "version": 0.1,
   "ACRCloud": {
     "region": "eu-west-1",

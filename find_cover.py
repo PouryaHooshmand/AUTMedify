@@ -35,3 +35,8 @@ def get_cover(track_address):
     track_stagger.write()
 
     return True
+
+if __name__ == '__main__':
+
+    music_address = input()
+    get_cover(music_address)
