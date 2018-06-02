@@ -51,11 +51,23 @@ class CategorizeMusic:
         except:
             self.logger('error', 'Unknown Error')
 
+    def link_track(self, file_dst, music_file):
+
+        # Create directories and move file
+        if not os.path.exists(file_dst):
+            os.makedirs(file_dst)
+            self.logger('info', 'directory not found!\nCreating directory: ' + file_dst)
+
+        try:
+            os.symlink(source=file_dst + '/' + music_file['name'] , link_name=music_file['address'])
+        except:
+            pass
+
     def move_file(self):
 
         for music_file in self.music_list:
-            metadata = MusicMetadata(music_file['address']).metadata  # Get Metadata
+            metadata = MusicMetadata(music_file['address']).metadata()  # Get Metadata
 
-            self.move_track(self.artist(metadata), music_file)
-            self.move_track(self.album(metadata), music_file)
-            self.move_track(self.genre(metadata), music_file)
+            self.link_track(self.artist(metadata), music_file)
+            self.link_track(self.album(metadata), music_file)
+            self.link_track(self.genre(metadata), music_file)
