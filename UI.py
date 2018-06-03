@@ -35,7 +35,11 @@ def UserFileInput2(status, name):
 
 
 def get_results():
-    return (var.get(),var2.get(), c1.get(), c2.get(), c3.get())
+    source=var.get()
+    des=var2.get()
+    categorize=c1.get()
+    metadata=c2.get()
+    suggest=c3.get()
 
 
 root = Tk()
