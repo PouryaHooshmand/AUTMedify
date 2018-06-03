@@ -1,16 +1,19 @@
-from tkinter import *
-from tkinter import filedialog
+from Tkinter import *
+import tkFileDialog
 
 
 def askdirectory():
-    dirname = filedialog.askdirectory()
-    if dirname:
-        var.set(dirname)
+    root.dirname = tkFileDialog.askdirectory()
+
+
+    if root.dirname:
+        var.set(root.dirname)
 
 def askdirectory2():
-    dirname = filedialog.askdirectory()
-    if dirname:
-        var2.set(dirname)
+    root.dirname = tkFileDialog.askdirectory()
+
+    if root.dirname:
+        var2.set(root.dirname)
 
 
 def UserFileInput(status, name):
